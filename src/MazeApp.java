@@ -2,8 +2,6 @@ import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 
@@ -12,7 +10,6 @@ public class MazeApp extends JFrame {
     private MazeVisualizer visualizer;
     private JLabel statusLabel;
     private JSlider speedSlider;
-    private JButton generateBtn;
     private JButton solveBtn;
 
     public MazeApp() {
@@ -37,7 +34,7 @@ public class MazeApp extends JFrame {
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         buttonsPanel.setOpaque(false);
 
-        generateBtn = new JButton("Generate New Maze");
+        JButton generateBtn = new JButton("Generate New Maze");
         styleButton(generateBtn);
         generateBtn.addActionListener(e -> visualizer.resetAndGenerate());
 
@@ -98,9 +95,7 @@ public class MazeApp extends JFrame {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ignored) {}
 
-        SwingUtilities.invokeLater(() -> {
-            new MazeApp().setVisible(true);
-        });
+        SwingUtilities.invokeLater(() -> new MazeApp().setVisible(true));
     }
 }
 
@@ -146,13 +141,10 @@ class MazeVisualizer extends JPanel {
 
         grid = new char[ROWS][COLS];
 
-        timer = new Timer(20, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (generating) stepGeneration();
-                else if (solving) stepSolver();
-                repaint();
-            }
+        timer = new Timer(20, e -> {
+            if (generating) stepGeneration();
+            else if (solving) stepSolver();
+            repaint();
         });
     }
 
